@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="snowflake-source" content="cortex-agent-authored" />
+  <title>Cortex AI Guardrails - Usage History Dashboard</title>
+  <script type="application/json" id="snowflake-report-metadata">
+  {
+    "generated": "2026-07-04",
+    "intent": "Visual infographic for Snowflake Cortex AI Guardrails Usage History view",
+    "sections": [
+      { "id": "overview", "title": "Overview", "dataSources": [], "producerNotes": "Static feature info." },
+      { "id": "architecture", "title": "Architecture", "dataSources": [], "producerNotes": "Mermaid flow diagram." },
+      { "id": "schema", "title": "Schema Reference", "dataSources": [{"type": "view", "sql": "SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.CORTEX_AI_GUARDRAILS_USAGE_HISTORY LIMIT 0"}], "producerNotes": "Column definitions." },
+      { "id": "queries", "title": "Quick Start Queries", "dataSources": [{"type": "query", "sql": "SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.CORTEX_AI_GUARDRAILS_USAGE_HISTORY WHERE USAGE_TIME >= DATEADD('hour', -72, CURRENT_TIMESTAMP()) LIMIT 100"}], "producerNotes": "Example queries." }
+    ]
+  }
+  </script>
+  <script src="/libs/mermaid@10.9.6/mermaid.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg-primary: light-dark(#FAF8F4, #0f1117);
+      --bg-card: light-dark(#ffffff, #1a1d27);
+      --bg-code: light-dark(#f1f5f9, #1e2233);
+      --text-primary: light-dark(#0f172a, #e5e7eb);
+      --text-secondary: light-dark(#475569, #94a3b8);
+      --text-muted: light-dark(#64748b, #6b7280);
+      --border: light-dark(#e2e8f0, #2d3348);
+      --accent-blue: light-dark(#2563eb, #3b82f6);
+      --accent-cyan: light-dark(#0891b2, #22d3ee);
+      --accent-green: light-dark(#059669, #34d399);
+      --accent-amber: light-dark(#d97706, #fbbf24);
+      --accent-red: light-dark(#dc2626, #f87171);
+      --accent-purple: light-dark(#7c3aed, #a78bfa);
+      --shadow: light-dark(0 1px 3px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.3));
+      --shadow-lg: light-dark(0 4px 20px rgba(0,0,0,0.06), 0 4px 20px rgba(0,0,0,0.4));
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+
+    .hero { background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 50%, #1a1a2e 100%); padding: 60px 40px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 30% 50%, rgba(34,211,238,0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(99,102,241,0.06) 0%, transparent 60%); }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-badge { display: inline-block; background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.3); color: #67e8f9; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; margin-bottom: 20px; }
+    .hero h1 { font-size: 42px; font-weight: 700; color: #ffffff; margin-bottom: 12px; }
+    .hero p { font-size: 18px; color: #94a3b8; max-width: 640px; margin: 0 auto; }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: -40px auto 40px; position: relative; z-index: 2; max-width: 1100px; padding: 0 24px; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; box-shadow: var(--shadow-lg); }
+    .stat-card .stat-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; }
+    .stat-card .stat-value { font-size: 28px; font-weight: 700; }
+    .stat-card .stat-desc { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+
+    .section { margin-bottom: 48px; }
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .section-number { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: var(--accent-blue); color: #fff; font-size: 14px; font-weight: 700; border-radius: 10px; }
+    .section-title { font-size: 24px; font-weight: 700; }
+
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 28px; box-shadow: var(--shadow); }
+    .callout { border-left: 4px solid var(--accent-cyan); background: light-dark(#ecfeff, rgba(34,211,238,0.06)); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; color: var(--text-secondary); }
+    .callout strong { color: var(--text-primary); }
+
+    .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 700px) { .columns { grid-template-columns: 1fr; } }
+
+    .feature-list { list-style: none; padding: 0; }
+    .feature-list li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .feature-list li:last-child { border-bottom: none; }
+    .feature-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+    .icon-blue { background: light-dark(#dbeafe, rgba(59,130,246,0.15)); color: var(--accent-blue); }
+    .icon-green { background: light-dark(#d1fae5, rgba(52,211,153,0.15)); color: var(--accent-green); }
+    .icon-amber { background: light-dark(#fef3c7, rgba(251,191,36,0.15)); color: var(--accent-amber); }
+    .icon-purple { background: light-dark(#ede9fe, rgba(167,139,250,0.15)); color: var(--accent-purple); }
+    .icon-red { background: light-dark(#fee2e2, rgba(248,113,113,0.15)); color: var(--accent-red); }
+
+    .schema-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; }
+    .schema-table th { text-align: left; padding: 10px 12px; background: light-dark(#f8fafc, #1e2233); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 2px solid var(--border); }
+    .schema-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .col-name { font-weight: 600; color: var(--accent-blue); font-family: 'SF Mono', Menlo, monospace; font-size: 12px; }
+    .col-type { color: var(--accent-purple); font-family: 'SF Mono', Menlo, monospace; font-size: 11px; }
+
+    .code-block { background: var(--bg-code); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; overflow-x: auto; font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 13px; line-height: 1.7; margin: 12px 0; }
+    .code-block .kw { color: var(--accent-purple); font-weight: 600; }
+    .code-block .fn { color: var(--accent-cyan); }
+    .code-block .str { color: var(--accent-green); }
+
+    .mermaid-container { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; text-align: center; }
+
+    .agentic-sources { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 16px; }
+    .source-card { background: light-dark(#f8fafc, #1e2233); border: 1px solid var(--border); border-radius: 8px; padding: 14px; text-align: center; }
+    .source-card .source-name { font-size: 12px; font-weight: 600; margin-top: 8px; }
+    .source-card .source-id { font-size: 10px; color: var(--text-muted); font-family: monospace; }
+
+    .footer { background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%); padding: 30px 40px; text-align: center; margin-top: 40px; }
+    .footer-content { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; flex-wrap: wrap; gap: 12px; }
+    .footer-left, .footer-center, .footer-right { color: #94a3b8; font-size: 13px; }
+    .footer-left strong { color: #e5e7eb; }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Snowflake Quick Bytes</div>
+      <h1>Cortex AI Guardrails</h1>
+      <p>Full observability into guardrail scans, prompt injection detection, and credit consumption across all your AI workloads.</p>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-label">View Name</div><div class="stat-value" style="font-size:14px;font-family:monospace;">CORTEX_AI_GUARDRAILS_USAGE_HISTORY</div><div class="stat-desc">SNOWFLAKE.ACCOUNT_USAGE schema</div></div>
+    <div class="stat-card"><div class="stat-label">Granularity</div><div class="stat-value">Per Scan</div><div class="stat-desc">One row per tool use scanned</div></div>
+    <div class="stat-card"><div class="stat-label">Key Signal</div><div class="stat-value">Injection</div><div class="stat-desc">Prompt injection detection</div></div>
+    <div class="stat-card"><div class="stat-label">Sources Tracked</div><div class="stat-value">5</div><div class="stat-desc">Agentic client types</div></div>
+  </div>
+
+  <div class="container">
+
+    <div class="section" id="overview">
+      <div class="section-header"><div class="section-number">1</div><div class="section-title">What It Is</div></div>
+      <div class="card">
+        <p style="font-size:15px;color:var(--text-secondary);margin-bottom:16px;">A new Account Usage view providing complete visibility into Cortex AI Guardrails activity, credit consumption, and prompt injection detection signals.</p>
+        <div class="callout"><strong>Key Insight:</strong> Each row represents a single guardrail scan for one tool use within an agent request. A request with multiple tool results produces multiple rows.</div>
+        <ul class="feature-list">
+          <li><span class="feature-icon icon-blue">&#9632;</span><span><strong>Per-scan granularity</strong> — Track every guardrail invocation individually</span></li>
+          <li><span class="feature-icon icon-green">&#9632;</span><span><strong>Token &amp; credit breakdown</strong> — Input, output, cache read/write metrics</span></li>
+          <li><span class="feature-icon icon-amber">&#9632;</span><span><strong>Prompt injection flags</strong> — Boolean signal when injection is detected</span></li>
+          <li><span class="feature-icon icon-purple">&#9632;</span><span><strong>Role-level audit</strong> — Full metadata on who triggered the scan</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="section-number">2</div><div class="section-title">Agentic Sources</div></div>
+      <div class="card">
+        <p style="font-size:15px;color:var(--text-secondary);margin-bottom:16px;">Guardrails are invoked across five Cortex AI client surfaces:</p>
+        <div class="agentic-sources">
+          <div class="source-card"><div style="font-size:24px;">&#128187;</div><div class="source-name">Cortex Code CLI</div><div class="source-id">CORTEX_CODE_CLI</div></div>
+          <div class="source-card"><div style="font-size:24px;">&#128421;</div><div class="source-name">Cortex Code Desktop</div><div class="source-id">CORTEX_CODE_DESKTOP</div></div>
+          <div class="source-card"><div style="font-size:24px;">&#10052;</div><div class="source-name">Cortex Code Snowsight</div><div class="source-id">CORTEX_CODE_SNOWSIGHT</div></div>
+          <div class="source-card"><div style="font-size:24px;">&#129302;</div><div class="source-name">Cortex Agent</div><div class="source-id">CORTEX_AGENT</div></div>
+          <div class="source-card"><div style="font-size:24px;">&#128161;</div><div class="source-name">Snowflake Intelligence</div><div class="source-id">SNOWFLAKE_INTELLIGENCE</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="architecture">
+      <div class="section-header"><div class="section-number">3</div><div class="section-title">How It Works</div></div>
+      <div class="card">
+        <div class="callout"><strong>Architecture:</strong> Guardrails scan tool-use outputs for prompt injection signals, then send those signals to the LLM for adjudication.</div>
+        <div class="mermaid-container">
+          <pre class="mermaid">
+flowchart LR
+    A["Agent Request"] --> B["Tool Execution"]
+    B --> C["Guardrail Scan"]
+    C --> D{"Injection Signal?"}
+    D -->|Yes| E["Flag + Log"]
+    D -->|No| F["Pass + Log"]
+    E --> G["USAGE_HISTORY View"]
+    F --> G
+          </pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="schema">
+      <div class="section-header"><div class="section-number">4</div><div class="section-title">Schema Reference</div></div>
+      <div class="card" style="overflow-x:auto;">
+        <table class="schema-table">
+          <thead><tr><th>Column</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td class="col-name">USER_ID</td><td class="col-type">NUMBER</td><td>Unique user identifier</td></tr>
+            <tr><td class="col-name">USER_NAME</td><td class="col-type">VARCHAR</td><td>Name of requesting user</td></tr>
+            <tr><td class="col-name">USER_TAGS</td><td class="col-type">ARRAY</td><td>Tags with level, database, schema, name, value</td></tr>
+            <tr><td class="col-name">REQUEST_ID</td><td class="col-type">VARCHAR</td><td>Unique request identifier</td></tr>
+            <tr><td class="col-name">PARENT_REQUEST_ID</td><td class="col-type">VARCHAR</td><td>Parent request ID (if applicable)</td></tr>
+            <tr><td class="col-name">AGENTIC_SOURCE</td><td class="col-type">VARCHAR</td><td>Cortex client that invoked guardrails</td></tr>
+            <tr><td class="col-name">USAGE_TIME</td><td class="col-type">TIMESTAMP_TZ</td><td>When usage was recorded</td></tr>
+            <tr><td class="col-name">TOKEN_CREDITS</td><td class="col-type">NUMBER</td><td>Token credits consumed</td></tr>
+            <tr><td class="col-name">TOKENS</td><td class="col-type">NUMBER</td><td>Total tokens used</td></tr>
+            <tr><td class="col-name">TOKENS_GRANULAR</td><td class="col-type">OBJECT</td><td>Breakdown: input, cache_read, cache_write, output</td></tr>
+            <tr><td class="col-name">CREDITS_GRANULAR</td><td class="col-type">OBJECT</td><td>Credit breakdown: input, cache_read, cache_write, output</td></tr>
+            <tr><td class="col-name">GUARDRAIL_RESULTS</td><td class="col-type">ARRAY</td><td>Per-tool scan results with injection flags</td></tr>
+            <tr><td class="col-name">GUARDRAILS_SIGNAL</td><td class="col-type">BOOLEAN</td><td>TRUE if any scan was flagged</td></tr>
+            <tr><td class="col-name">METADATA</td><td class="col-type">OBJECT</td><td>Contains role_id and role_name</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="queries">
+      <div class="section-header"><div class="section-number">5</div><div class="section-title">Quick Start Queries</div></div>
+      <div class="card">
+        <p style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:8px;">Recent guardrail scans (last 72 hours)</p>
+        <div class="code-block"><span class="kw">SELECT</span> *
+<span class="kw">FROM</span> SNOWFLAKE.ACCOUNT_USAGE.CORTEX_AI_GUARDRAILS_USAGE_HISTORY
+<span class="kw">WHERE</span> USAGE_TIME >= <span class="fn">DATEADD</span>(<span class="str">'hour'</span>, -72, <span class="fn">CURRENT_TIMESTAMP</span>())
+<span class="kw">ORDER BY</span> USAGE_TIME <span class="kw">DESC</span> <span class="kw">LIMIT</span> 100;</div>
+
+        <p style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:8px;margin-top:20px;">Flagged prompt injection attempts</p>
+        <div class="code-block"><span class="kw">SELECT</span> USER_NAME, AGENTIC_SOURCE, USAGE_TIME, GUARDRAIL_RESULTS
+<span class="kw">FROM</span> SNOWFLAKE.ACCOUNT_USAGE.CORTEX_AI_GUARDRAILS_USAGE_HISTORY
+<span class="kw">WHERE</span> GUARDRAILS_SIGNAL = <span class="str">TRUE</span>
+  <span class="kw">AND</span> USAGE_TIME >= <span class="fn">DATEADD</span>(<span class="str">'hour'</span>, -72, <span class="fn">CURRENT_TIMESTAMP</span>())
+<span class="kw">ORDER BY</span> USAGE_TIME <span class="kw">DESC</span>;</div>
+
+        <p style="font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:8px;margin-top:20px;">Credit usage by agentic source</p>
+        <div class="code-block"><span class="kw">SELECT</span> AGENTIC_SOURCE,
+       <span class="fn">COUNT</span>(*) <span class="kw">AS</span> scan_count,
+       <span class="fn">SUM</span>(TOKEN_CREDITS) <span class="kw">AS</span> total_credits,
+       <span class="fn">SUM</span>(TOKENS) <span class="kw">AS</span> total_tokens
+<span class="kw">FROM</span> SNOWFLAKE.ACCOUNT_USAGE.CORTEX_AI_GUARDRAILS_USAGE_HISTORY
+<span class="kw">WHERE</span> USAGE_TIME >= <span class="fn">DATEADD</span>(<span class="str">'day'</span>, -7, <span class="fn">CURRENT_TIMESTAMP</span>())
+<span class="kw">GROUP BY</span> AGENTIC_SOURCE
+<span class="kw">ORDER BY</span> total_credits <span class="kw">DESC</span>;</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><div class="section-number">6</div><div class="section-title">Best Practices</div></div>
+      <div class="card">
+        <div class="columns">
+          <div>
+            <h4 style="font-size:14px;margin-bottom:12px;color:var(--accent-green);">Do</h4>
+            <ul class="feature-list">
+              <li><span class="feature-icon icon-green">&#10003;</span><span>Monitor GUARDRAILS_SIGNAL daily for injection attempts</span></li>
+              <li><span class="feature-icon icon-green">&#10003;</span><span>Track credit consumption by source to manage costs</span></li>
+              <li><span class="feature-icon icon-green">&#10003;</span><span>Correlate REQUEST_ID with agent logs for full tracing</span></li>
+              <li><span class="feature-icon icon-green">&#10003;</span><span>Set up alerts on high-frequency flagged requests</span></li>
+            </ul>
+          </div>
+          <div>
+            <h4 style="font-size:14px;margin-bottom:12px;color:var(--accent-red);">Avoid</h4>
+            <ul class="feature-list">
+              <li><span class="feature-icon icon-red">&#10007;</span><span>Ignoring flagged signals without investigation</span></li>
+              <li><span class="feature-icon icon-red">&#10007;</span><span>Assuming one row = one request (multiple tool uses)</span></li>
+              <li><span class="feature-icon icon-red">&#10007;</span><span>Overlooking PARENT_REQUEST_ID for nested agents</span></li>
+              <li><span class="feature-icon icon-red">&#10007;</span><span>Running broad queries without time filters</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-content">
+      <div class="footer-left"><strong>Snowflake Quick Bytes</strong> — Satish Kumar</div>
+      <div class="footer-center">@snowflakechronicles · @satishkumar-snowflake</div>
+      <div class="footer-right">@skrz2014 · July 2026</div>
+    </div>
+  </div>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, securityLevel: 'strict', theme: 'neutral' });
+  </script>
+</body>
+</html>
