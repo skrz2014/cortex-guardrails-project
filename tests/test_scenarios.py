@@ -1,5 +1,4 @@
 # Generate synthetic test data and run all AISOC scenarios with visual output
-# Co-authored with CoCo
 """
 AISOC Scenario Simulator
 Generates realistic synthetic data mimicking CORTEX_AI_GUARDRAILS_USAGE_HISTORY
