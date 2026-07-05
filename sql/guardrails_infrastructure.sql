@@ -1,5 +1,4 @@
 -- Snowflake infrastructure for BFSI AI Security Operations Center (AISOC)
--- Co-authored with CoCo
 
 -- =============================================================================
 -- SETUP
