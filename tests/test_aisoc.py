@@ -1,5 +1,4 @@
 # End-to-end test suite for AISOC Cortex AI Guardrails Streamlit app analytics engine
-# Co-authored with CoCo
 """
 Test Suite: Cortex AI Guardrails AISOC
 Validates all analytics functions with synthetic data that mirrors
