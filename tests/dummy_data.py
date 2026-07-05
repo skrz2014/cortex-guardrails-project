@@ -1,5 +1,4 @@
 # Dummy data generator module for AISOC testing and demo mode
-# Co-authored with CoCo
 """
 Generates synthetic data matching SNOWFLAKE.ACCOUNT_USAGE.CORTEX_AI_GUARDRAILS_USAGE_HISTORY schema.
 
