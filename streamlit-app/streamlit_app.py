@@ -1,5 +1,4 @@
 # Fortune 100 BFSI AI Security Operations Center (AISOC) — Cortex AI Guardrails Enterprise Monitor
-# Co-authored with CoCo
 import os
 import json
 import hashlib
