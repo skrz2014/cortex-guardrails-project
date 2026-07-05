@@ -1,5 +1,4 @@
 # Shared pytest fixtures for AISOC test suite
-# Co-authored with CoCo
 import json
 import random
 from datetime import datetime, timedelta
