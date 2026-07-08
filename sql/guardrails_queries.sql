@@ -1,5 +1,5 @@
 -- Cortex AI Guardrails Usage History - Analytical Queries
--- Co-authored with CoCo
+
 
 -- =============================================================================
 -- 1. RECENT GUARDRAIL SCANS (Last 72 Hours)
